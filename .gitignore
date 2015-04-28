@@ -1,0 +1,12 @@
+.project
+.pydevproject
+.settings
+*.pyc
+.settings
+.*
+*~
+*/migrations/*
+*.egg-info/*
+dist
+build/*
+!.gitignore
