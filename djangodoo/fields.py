@@ -5,6 +5,7 @@ from django.utils import translation
 from django.utils.functional import lazy
 from django.utils import six
 from .models import OdooModel
+import base64
 
 """
     Translation methods
@@ -106,10 +107,11 @@ class TextField(OdooField):
 
 
 class CharField(TextField):
-    
+
     def to_django(self, **kwargs):
         kwargs['max_length'] = self.details.get('size') or 512
         return super(CharField, self).to_django(**kwargs)
+
 
 class BooleanField(OdooField):
 
@@ -163,6 +165,13 @@ class BinaryField(OdooField):
         kwargs["null"] = not(self.details.get("required"))
         return super(BinaryField, self).to_django(**kwargs)
 
+    def convert_data(self, data):
+        """Odoo data is a b64-encoded string"""
+        return base64.b64decode(data) if data else None
+
+    def convert_back(self, data):
+        return base64.b64encode(data).decode("utf-8") if data else False
+
 
 class SelectionField(CharField):
 
@@ -198,12 +207,12 @@ class Many2OneField(OdooField):
 
     def convert_data(self, data):
         """
-            La data Odoo est une paire (id, valeur textuelle)
-            On cherche dans les objets du modèle cible une instance ayant un odoo_id égal au premier
-            élément de la paire ; s'il n'existe pas on le load depuis Odoo
+            Odoo data is a pair (id, label)
+            We look for objects in the target model an instance having a odoo_id equal to the first
+            element of the pair ; if not found, we load it from Odoo
 
-            :param (tuple ou False) data: la valeur du champ à convertir
-            :return (OdooModel ou False): l'instance d'objet liée via ce champ m2o
+            :param (tuple or False) data: the value to convert
+            :return (OdooModel or False): the object instance linked to this m2o field
         """
         if data and isinstance(data, (list, tuple)) and len(data) == 2:
             to_model = settings.odoo_models[self.details['relation']]
@@ -216,11 +225,12 @@ class Many2OneField(OdooField):
 
     def convert_back(self, data):
         """
-            La data Django est soit None soit un objet Django
-            On le transforme soit en 'False', soit en integer en récupérant l'odoo_id de l'objet cible
+            Django data is either None or a Django instance
+            We tranform it into False or an integer by getting the odoo_id on the instance.
 
-            :param (OdooModel ou False) data: la valeur du champ à convertir
-            :return (integer ou False): l'id de l'objet cible dans Odoo
+            :todo: if the target objet has no odoo_id, first push it to odoo
+            :param (OdooModel or False) data: the value to convert
+            :return (integer or False): the idi of the object in odoo
         """
         if data and isinstance(data, OdooModel) and hasattr(data, 'odoo_id'):
             return data.odoo_id

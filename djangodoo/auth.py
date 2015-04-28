@@ -10,7 +10,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import auth
 
 
-
 class OdooAuthBackend(object):
 
     """
@@ -48,7 +47,7 @@ class OdooAuthBackend(object):
             return User.objects.get(pk=user_id)
         except User.DoesNotExist:
             return None
-        
+
     # @login_required
     # def logout_view(self,request):
     #    auth.logout(request)
