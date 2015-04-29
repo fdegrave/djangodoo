@@ -48,8 +48,8 @@ def selection_translate(field):
     return tuple(res)
 
 
-# TODO: valeurs par défaut!
-# TODO: domaines
+# TODO: default values
+# TODO: domains
 
 FIELDS_CONV = {
     "char": "CharField",
@@ -183,8 +183,8 @@ class SelectionField(CharField):
 class Many2OneField(OdooField):
 
     """
-        Si l'objet désigné par details['relation'] existe au sein de django, alors on peut créer le champ directement
-        Sinon, on retarde la création du champ au moment de l'éventuelle création de cet objet
+        If the model identified by details['relation'] exists in django, then we can create the field directly.
+        Otherwise, we delay the field creation until the possible creation of this model.
     """
 
     def __new__(cls, details):
@@ -243,9 +243,9 @@ class Many2OneField(OdooField):
 class One2ManyField(OdooField):
 
     """
-        On ne crée pas de champ one2many à proprement parler, on modifie
-        simplement l'attribut "relation_field" au champs many2one inverse
-        pour qu'il porte le nom de ce champ-ci
+        There is no one2many field in Django, so we simply set the "relation_field"
+        attribute of the foreignKey field encoding the opposite relationship so it bares
+        the name of this one2many field
     """
     def __new__(cls, details):
         if details['relation'] in settings.odoo_models:

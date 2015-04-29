@@ -11,12 +11,12 @@ import erppeek
 
 class OdooModel(models.Model):
 
-    """Modèle d'objet Odoo récupéré dans Django
+    """Model of a Odoo object copied in Django
 
-        Attributs:
-            _odoo_model: le nom du modèle Odoo dont on récupère une "copie" dans Django
-            _odoo_fields: la liste des noms de champs à récupérer dans le modèle Odoo ; si None, on les récupère tous
-            _odoo_ignore_fields: la liste des noms de champs à NE PAS récupérer dans le modèle Odoo
+        Attributes:
+            _odoo_model: name of the Odoo model that will be copied in Django
+            _odoo_fields: list of field names that will be copied from Odoo. If None, all field are copied.
+            _odoo_ignore_fields: list of field names that will NOT be copied from Odoo
     """
 
     _odoo_model = None
@@ -39,7 +39,7 @@ class OdooModel(models.Model):
 
     @classmethod
     def odoo_load(cls, odoo_ids, client=None):
-        """Chargement de records depuis Odoo
+        """Load records from Odoo
 
             On charge des données depuis Odoo dans une liste d'objets Django sur base d'une liste d'IDs
             On lit donc les données correspondant aux champs dont on a besoin,
@@ -76,9 +76,9 @@ class OdooModel(models.Model):
 
     @classmethod
     def odoo_search(cls, domain, offset=0, limit=None, order=None, context=None, client=None):
-        """Recherche de records depuis Odoo
+        """Search and load records from Odoo
 
-            On charge des données depuis Odoo dans une liste d'objets Django sur base d'un domaine
+            We load data from Odoo based on a domain filter
         """
         client = client or settings.odoo
         odoo_ids = client.search(cls._odoo_model, domain, offset=offset, limit=limit, order=order, context=context)
@@ -147,7 +147,6 @@ class OdooModel(models.Model):
 
 
 class OdooUser(models.Model):
-
     user = models.OneToOneField(User, blank=False, related_name='odoo_user')
 
     def __init__(self, *args, **kwargs):

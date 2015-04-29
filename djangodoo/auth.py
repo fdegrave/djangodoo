@@ -1,13 +1,9 @@
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.contrib.auth import logout
 import erppeek
 from .models import OdooUser
 from django.core.cache import caches
 from django.db import transaction
-from django.http import HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
-from django.contrib import auth
 
 
 class OdooAuthBackend(object):
@@ -47,8 +43,3 @@ class OdooAuthBackend(object):
             return User.objects.get(pk=user_id)
         except User.DoesNotExist:
             return None
-
-    # @login_required
-    # def logout_view(self,request):
-    #    auth.logout(request)
-    #    return HttpResponseRedirect('/login/')
