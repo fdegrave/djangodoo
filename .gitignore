@@ -1,10 +1,6 @@
-.project
-.pydevproject
-.settings
-*.pyc
-.settings
 .*
 *~
+*.pyc
 */migrations/*
 *.egg-info/*
 dist

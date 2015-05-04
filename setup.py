@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 from setuptools import setup
 
@@ -9,13 +10,13 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='djangodoo',
-    version='0.1.1',
+    version='0.2',
     packages=['djangodoo'],
     include_package_data=True,
     license='MIT License',
     description='A Django app to copy models, load and save records from a running Odoo instance',
     long_description=README,
-    #     url='http://www.example.com/',
+    url='https://github.com/fdegrave/djangodoo',
     author='François Degrave',
     author_email='francois.degrave@unamur.be',
     classifiers=[
