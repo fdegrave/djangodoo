@@ -39,14 +39,13 @@ class OdooModel(models.Model):
 
     @classmethod
     def odoo_load(cls, odoo_ids, client=None):
-        """Load records from Odoo
+        """Loads records from Odoo
 
-            On charge des données depuis Odoo dans une liste d'objets Django sur base d'une liste d'IDs
-            On lit donc les données correspondant aux champs dont on a besoin,
-            et on convertit les valeurs reçues en fonction du type de champ
-            grâce aux méthodes définies dans `fields`. En effet, chaque champ "Django"
-            généré depuis un champ "Odoo" contient une référence vers un objet
-            "OdooField" nommé "odoo_field"
+            Loads records from Odoo into Django instances given a list of Odoo identifiers *odoo_ids*.
+            We read the data corresponding to the fields we need and convert it with respect
+            to the type of field thanks to the methods defined in 'fields.py'. Each django field
+            generated from a Odoo field contains a "odoo_field" attribute containing a "OdooField"
+            instance.
         """
         def update_or_create(args):
             try:
@@ -86,10 +85,10 @@ class OdooModel(models.Model):
 
     @classmethod
     def odoo_write(cls, objs, args, client=None):
-        """Enregistrement sur records multiples
+        """Writes in multiple records
 
-            On enregistre les modification données par `args` sur Odoo pour
-            les records liés aux objets Django `objs`
+            Writes the values provided in *args* into the Odoo records originating 
+            the Django instances provided in *objs*
         """
         def convert(args):
             res = {}
@@ -129,12 +128,13 @@ class OdooModel(models.Model):
         return res
 
     def odoo_push(self, fieldnames=None, client=None):
-        """Enregistrement d'une instance Django vers Odoo
+        """Saves a Django instance into Odoo
 
-            S'il y a un `odoo_id` on fait un `write`, sinon un `create` ; on n'enregistre que les champs
-            indiqués dans `fieldnames`, ou tous si fieldnames est nul
+            If the instance has an *odoo_id* then we call `write`, otherwise we call `create`; 
+            we only save the values of the fields indicated in `fieldnames`, or all
+            of them if it is None.
 
-            :todo: prendre en compte les one2many et many2many?
+            :todo: deal with one2many and many2many fields?
         """
         odoo_model = type(self)._odoo_model
         client = client or settings.odoo
