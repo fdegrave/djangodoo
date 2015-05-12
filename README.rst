@@ -41,13 +41,9 @@ Quick start
 OdooModel
 ---------
 
-OdooModel inherits from **django.db.models.Model**. You can thus do with an *OdooModel* anything you would do with a regular *django.db.models.Model*. However, *OdooModel* provides a number of additional features:
+*OdooModel* inherits from **django.db.models.Model**. You can thus do with an *OdooModel* anything you would do with a regular *django.db.models.Model*. However, *OdooModel* provides a number of additional features:
 
-1. As stated in the "Quickstart" section, it allows you to provide the name of a model defined in Odoo as the value of the **_odoo_model** attribute. The fields of this latter model will be copied -- and "translated" -- into Django fields at runtime (and during the migration process, of course);
-
-.. note::
-
-  A *many2one* field from Odoo will be translated into a *ForeignKey* Django field only if the target model of this field is also copied into Django.
+1. As stated in the "Quickstart" section, it allows you to provide the name of a model defined in Odoo as the value of the **_odoo_model** attribute. The fields of this latter model will be copied -- and "translated" -- into Django fields at runtime (and during the migration process, of course) (note that a *many2one* field from Odoo will be translated into a *ForeignKey* Django field only if the target model of this field is also copied into Django);
 
 
 2. The **_odoo_fields** and **_odoo_ignore_fields** allow you to restrict the list of fields that are copied from the original Odoo model;

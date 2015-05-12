@@ -109,7 +109,6 @@ class OdooModel(models.Model):
             Ces détails traduits sont stockés en cache dans chaque objet OdooField
         """
         def convert_lang(lang):
-            print(lang)
             res = lang.replace("-", "_")
             if "_" in res:
                 res = res[:3] + res[3:].upper()

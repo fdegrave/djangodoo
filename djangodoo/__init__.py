@@ -2,14 +2,7 @@
 from django.conf import settings
 from django.db.models.signals import class_prepared
 import erppeek
-import pprint
-from django.db import models as djangomodels
-from django.contrib.contenttypes.models import ContentType
 from .fields import convert_field
-from django.utils import translation
-
-import sys
-import inspect
 
 
 def set_auth_cache():
@@ -42,8 +35,6 @@ def add_extra_model_fields(sender, **kwargs):
         if odoo_field:
             field = odoo_field.to_django()
             field.contribute_to_class(django_model, field_details['name'])
-#         else:
-#             print field_details['name'], pprint.pformat(field_details)
 
     odoo = settings.odoo
     if getattr(sender, "_odoo_model", False):

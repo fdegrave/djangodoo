@@ -4,7 +4,6 @@ from django.db import models as djangomodels
 from django.utils import translation
 from django.utils.functional import lazy
 from django.utils import six
-from .models import OdooModel
 import base64
 
 """
@@ -24,7 +23,7 @@ def _get_details_in_lang(field, lang):
 
 
 def field_translate(field, key):
-    lang = translation.get_language()
+    lang = translation.get_language() or "en-us"
     details = _get_details_in_lang(field, lang)
     res = details.get(key, "")
     if isinstance(res, six.binary_type):
@@ -36,7 +35,7 @@ _ = lazy(field_translate, six.text_type)
 
 def selection_translate(field):
     def trans(val):
-        lang = translation.get_language()
+        lang = translation.get_language() or "en-us"
         details = _get_details_in_lang(field, lang)
         return dict(details['selection'])[val]
 
@@ -232,6 +231,7 @@ class Many2OneField(OdooField):
             :param (OdooModel or False) data: the value to convert
             :return (integer or False): the idi of the object in odoo
         """
+        from .models import OdooModel
         if data and isinstance(data, OdooModel) and hasattr(data, 'odoo_id'):
             return data.odoo_id
 #         elif isinstance(data, (int, long)):
