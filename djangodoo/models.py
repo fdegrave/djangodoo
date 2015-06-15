@@ -144,6 +144,18 @@ class OdooModel(models.Model):
         else:
             return client.model(odoo_model).create(args)
 
+#     def __getattr__(self, name):
+#         """Redefine getattr in order to translate translatable fields
+#
+#             Enables the translation of fields values based
+#         """
+#         print("getattr -----------------------", self._odoo_model, self.odoo_id, name)
+#         for field in type(self)._meta.fields:
+#             if (hasattr(field, "odoo_field") and field.odoo_field.translatable and
+#                     field.name == name and self.odoo_id):
+#                 return settings.odoo.read(self._odoo_model, self.odoo_id, fields=name)
+#         return super(OdooModel, self).__getitem__()
+
 
 class OdooUser(models.Model):
     user = models.OneToOneField(User, blank=False, related_name='odoo_user')

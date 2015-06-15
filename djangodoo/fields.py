@@ -73,6 +73,7 @@ class OdooField(object):
 
     def __init__(self, details):
         self.details = details
+        self.translatable = details.get("translate")
         self.django_field = False
         self.translation_cache = {}  # translations cache
         return super(OdooField, self).__init__()
@@ -201,7 +202,6 @@ class Many2OneField(OdooField):
         else:
             to_model = settings.odoo_models[self.details['relation']]
             kwargs["to"] = to_model
-        kwargs["related_name"] = ("%(model)s_%(name)s" % (self.details)).replace('.', '_')
         return super(Many2OneField, self).to_django(**kwargs)
 
     def convert_data(self, data):
