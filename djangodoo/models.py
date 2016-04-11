@@ -87,7 +87,7 @@ class OdooModel(models.Model):
     def odoo_write(cls, objs, args, client=None):
         """Writes in multiple records
 
-            Writes the values provided in *args* into the Odoo records originating 
+            Writes the values provided in *args* into the Odoo records originating
             the Django instances provided in *objs*
         """
         def convert(args):
@@ -129,7 +129,7 @@ class OdooModel(models.Model):
     def odoo_push(self, fieldnames=None, client=None):
         """Saves a Django instance into Odoo
 
-            If the instance has an *odoo_id* then we call `write`, otherwise we call `create`; 
+            If the instance has an *odoo_id* then we call `write`, otherwise we call `create`;
             we only save the values of the fields indicated in `fieldnames`, or all
             of them if it is None.
 

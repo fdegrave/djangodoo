@@ -3,6 +3,9 @@ from django.conf import settings
 from django.db.models.signals import class_prepared
 import erppeek
 from .fields import convert_field
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def set_auth_cache():
@@ -20,8 +23,8 @@ def set_odoo_client():
         settings.odoo_models = {}
         settings.deferred_m2o = {}
         settings.deferred_o2m = {}
-    except ConnectionRefusedError:
-        print("Unable to connect to a running Odoo server.")
+    except:
+        logger.error('Unable to connect to a running Odoo server')
         raise
 
 
