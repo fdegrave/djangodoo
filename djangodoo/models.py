@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.conf import settings
 from django.db import models
-from django.contrib.auth.models import User
 from django.core.cache import caches
 import erppeek
 
@@ -158,7 +157,7 @@ class OdooModel(models.Model):
 
 
 class OdooUser(models.Model):
-    user = models.OneToOneField(User, blank=False, related_name='odoo_user')
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, blank=False, related_name='odoo_user')
 
     def __init__(self, *args, **kwargs):
         config = getattr(settings, "ODOO_HOST", False)
