@@ -37,6 +37,13 @@ class OdooModel(models.Model):
         return [f for f in res if not(f in (cls._odoo_ignore_fields or []))]
 
     @classmethod
+    def odoo_get_all_ids(cls, client=None):
+        odoo_model = cls._odoo_model
+        client = client or settings.odoo
+        ans = client.model(odoo_model).keys()
+        return ans
+
+    @classmethod
     def odoo_load(cls, odoo_ids, client=None):
         """Loads records from Odoo
 
