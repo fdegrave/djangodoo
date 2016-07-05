@@ -11,7 +11,7 @@ Quick start
 
     INSTALLED_APPS = (
         ...
-        'Djangodoo',
+        'djangodoo',
     )
 
 2. Include the Odoo host configuration in your project settings like this::
