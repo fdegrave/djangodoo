@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.conf import settings
 from django.db import models
-from django.contrib.auth.models import User
 from django.core.cache import caches
 import erppeek
 
@@ -36,6 +35,13 @@ class OdooModel(models.Model):
     def _get_odoo_fields(cls):
         res = cls._odoo_fields or settings.odoo.model(cls._odoo_model).fields()
         return [f for f in res if not(f in (cls._odoo_ignore_fields or []))]
+
+    @classmethod
+    def odoo_get_all_ids(cls, client=None):
+        odoo_model = cls._odoo_model
+        client = client or settings.odoo
+        ans = client.model(odoo_model).keys()
+        return ans
 
     @classmethod
     def odoo_load(cls, odoo_ids, client=None):
@@ -158,7 +164,7 @@ class OdooModel(models.Model):
 
 
 class OdooUser(models.Model):
-    user = models.OneToOneField(User, blank=False, related_name='odoo_user')
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, blank=False, related_name='odoo_user')
 
     def __init__(self, *args, **kwargs):
         config = getattr(settings, "ODOO_HOST", False)
