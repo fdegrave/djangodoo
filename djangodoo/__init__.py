@@ -16,6 +16,7 @@ def set_auth_cache():
 
 def set_odoo_client():
     config = getattr(settings, "ODOO_HOST", False)
+    logger.info("Setting up the Odoo client...")
     try:
         settings.odoo = erppeek.Client("%s:%d" % (config['HOST'], config['PORT']), db=config['DB'],
                                        user=config['USER'], password=config['PASSWORD'], verbose=False)
@@ -23,6 +24,7 @@ def set_odoo_client():
         settings.odoo_models = {}
         settings.deferred_m2o = {}
         settings.deferred_o2m = {}
+        logger.info("...done.")
     except:
         logger.error('Unable to connect to a running Odoo server')
         raise
